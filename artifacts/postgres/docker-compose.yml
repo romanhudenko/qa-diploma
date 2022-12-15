@@ -1,0 +1,10 @@
+version: '1.0'
+services:
+  db:
+    image: postgres:12-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: qwerty123
+      POSTGRES_USER: petya
+      POSTGRES_DB: app
