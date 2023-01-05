@@ -3,6 +3,7 @@ package ru.netology.test;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
+import ru.netology.data.DBHelper;
 import ru.netology.data.DataHelper;
 import ru.netology.pages.CardInputPage;
 
@@ -36,8 +37,8 @@ public class PageTest {
         page.inputCVV(card.getCVV());
         page.clickNext();
         page.checkForSuccess();
-        String paymentId = DataHelper.getLastOrderPaymentId();
-        String status = DataHelper.getPaymentStatus(paymentId);
+        String paymentId = DBHelper.getLastOrderPaymentId();
+        String status = DBHelper.getPaymentStatus(paymentId);
         Assertions.assertEquals("APPROVED", status);
     }
 
@@ -53,8 +54,8 @@ public class PageTest {
         page.inputCVV(card.getCVV());
         page.clickNext();
         page.checkForSuccess();
-        String paymentId = DataHelper.getLastOrderPaymentId();
-        String status = DataHelper.getCreditRequestStatus(paymentId);
+        String paymentId = DBHelper.getLastOrderPaymentId();
+        String status = DBHelper.getCreditRequestStatus(paymentId);
         Assertions.assertEquals("APPROVED", status);
     }
 
@@ -70,8 +71,8 @@ public class PageTest {
         page.inputCVV(card.getCVV());
         page.clickNext();
         page.checkForError();
-        String paymentId = DataHelper.getLastOrderPaymentId();
-        String status = DataHelper.getPaymentStatus(paymentId);
+        String paymentId = DBHelper.getLastOrderPaymentId();
+        String status = DBHelper.getPaymentStatus(paymentId);
         Assertions.assertEquals("DECLINED", status);
     }
 
@@ -87,8 +88,8 @@ public class PageTest {
         page.inputCVV(card.getCVV());
         page.clickNext();
         page.checkForError();
-        String paymentId = DataHelper.getLastOrderPaymentId();
-        String status = DataHelper.getCreditRequestStatus(paymentId);
+        String paymentId = DBHelper.getLastOrderPaymentId();
+        String status = DBHelper.getCreditRequestStatus(paymentId);
         Assertions.assertEquals("DECLINED", status);
     }
 
@@ -163,6 +164,35 @@ public class PageTest {
         page.inputOwner(DataHelper.getInvalidOwner());
         page.clickNext();
         page.checkForOwnerError();
+    }
+
+    @Test
+    public void cyrillicOwner() {
+        DataHelper.BankCard card = DataHelper.getValidCard();
+        CardInputPage page = new CardInputPage();
+        page.selectCredit();
+        page.inputCardNumber(card.getNumber());
+        page.inputMonth(card.getExpirationMonth());
+        page.inputYear(card.getExpirationYear());
+        page.inputOwner(DataHelper.getCyrillicOwner());
+        page.inputCVV(card.getCVV());
+        page.clickNext();
+        page.checkForOwnerError();
+    }
+
+    @Test
+    public void errorTextClear() {
+        DataHelper.BankCard card = DataHelper.getValidCard();
+        CardInputPage page = new CardInputPage();
+        page.selectBuy();
+        page.clickNext();
+        page.inputCardNumber(card.getNumber());
+        page.inputMonth(card.getExpirationMonth());
+        page.inputYear(card.getExpirationYear());
+        page.inputOwner(card.getCardHolder());
+        page.inputCVV(card.getCVV());
+        page.clickNext();
+        page.checkForNoErrors();
     }
 
     @Test

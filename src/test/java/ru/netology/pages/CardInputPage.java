@@ -85,4 +85,12 @@ public class CardInputPage {
     public void checkForCVVError() {
         cvvErrorText.shouldBe(Condition.visible);
     }
+
+    public void checkForNoErrors() {
+        cardNumberErrorText.shouldBe(Condition.hidden);
+        monthErrorText.shouldBe(Condition.hidden);
+        yearErrorText.shouldBe(Condition.hidden);
+        ownerErrorText.shouldBe(Condition.hidden);
+        cvvErrorText.shouldBe(Condition.hidden);
+    }
 }
