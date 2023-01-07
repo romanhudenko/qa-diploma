@@ -37,4 +37,7 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'db_link', 'jdbc:mysql://localhost:3306/app'
+    systemProperty 'db_username', 'petya'
+    systemProperty 'db_password', 'qwerty123'
 }
